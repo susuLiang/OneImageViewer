@@ -26,8 +26,9 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         self.view.addSubview(yellowView)
 
         imageViewPicked.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - yellowView.frame.height)
-        imageViewPicked.image = UIImage(named: "placeholder")
-        imageViewPicked.contentMode = .scaleAspectFit
+        imageViewPicked.image = UIImage(named: "placeholder")?.withRenderingMode(.alwaysTemplate)
+        imageViewPicked.contentMode = .center
+        imageViewPicked.tintColor = UIColor.white
     }
 
     override func didReceiveMemoryWarning() {
