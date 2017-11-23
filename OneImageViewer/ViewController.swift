@@ -18,7 +18,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setButtonView()
+        setButton()
         setScrollView()
         
         yellowView.frame = CGRect(x: 0, y: self.view.frame.height - 77, width: self.view.frame.width, height: 77)
@@ -32,15 +32,20 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         super.didReceiveMemoryWarning()
     }
     
-    func setButtonView() {
+    func setButton() {
         
         let pickButton = UIButton()
         pickButton.frame = CGRect(x: 98, y: 17, width: 180, height: 44)
-        pickButton.backgroundColor = UIColor.black
+        pickButton.backgroundColor = UIColor(red: 43/255.0, green: 43/255.0, blue: 43/255.0, alpha: 1)
         pickButton.setTitle("Pick an Image", for: .normal)
         pickButton.setTitleColor(.white, for: .normal)
         pickButton.titleLabel?.font = UIFont(name: "SFUIText", size: 20)
         pickButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
+        pickButton.layer.cornerRadius = 2
+        pickButton.layer.shadowColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 0.25).cgColor
+        pickButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        pickButton.layer.shadowRadius = 2
+        pickButton.layer.shadowOpacity = 1.0
         yellowView.addSubview(pickButton)
         pickButton.addTarget(self, action: #selector(self.loadImage(_:)), for: .touchUpInside)
     }
@@ -68,7 +73,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
 
         scrollView = UIScrollView()
         scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - yellowView.frame.height)
-        scrollView.backgroundColor = UIColor.black
+        scrollView.backgroundColor = UIColor(red: 43/255.0, green: 43/255.0, blue: 43/255.0, alpha: 1)
         scrollView.contentSize = imageViewPicked.bounds.size
 
         self.view.addSubview(scrollView)
