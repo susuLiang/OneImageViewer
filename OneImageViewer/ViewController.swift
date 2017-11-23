@@ -12,16 +12,20 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     
     var scrollView: UIScrollView!
     @IBOutlet weak var pickButton: UIButton!
-    @IBOutlet weak var yellowView: UIView!
     var imagePicker: UIImagePickerController!
     var imageViewPicked = UIImageView()
+    var yellowView = UIView()
    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setButtonView()
         setScrollView()
-        imageViewPicked.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - 77)
+        
+        yellowView.frame = CGRect(x: 0, y: self.view.frame.height - 77, width: self.view.frame.width, height: 77)
+        yellowView.backgroundColor = UIColor(red: 249/255.0, green: 223/255.0, blue: 23/255.0, alpha: 1)
+        self.view.addSubview(yellowView)
+
+        imageViewPicked.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - yellowView.frame.height)
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,10 +33,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     }
     
     func setButtonView() {
-        let yellowView = UIView()
-        yellowView.frame = CGRect(x: 0, y: 590, width: self.view.frame.width, height: 77)
-        yellowView.backgroundColor = UIColor(red: 249/255.0, green: 223/255.0, blue: 23/255.0, alpha: 1)
-        self.view.addSubview(yellowView)
         
         let pickButton = UIButton()
         pickButton.frame = CGRect(x: 98, y: 17, width: 180, height: 44)
@@ -67,7 +67,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     func setScrollView() {
 
         scrollView = UIScrollView()
-        scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - 77)
+        scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - yellowView.frame.height)
         scrollView.backgroundColor = UIColor.black
         scrollView.contentSize = imageViewPicked.bounds.size
 
@@ -80,9 +80,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 4.0
         scrollView.zoomScale = 1.0
-
-        
-        
     }
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -95,13 +92,11 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         let minScale = min(widthScale, heightScale)
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
-        
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         updateMinZoomScaleForSize(view.bounds.size, contentView: imageViewPicked)
-        print(imageViewPicked.bounds)
     }
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
