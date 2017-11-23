@@ -58,8 +58,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            imageViewPicked.contentMode = .scaleAspectFit
             imageViewPicked.image = pickedImage
+            imageViewPicked.contentMode = .scaleAspectFit
             dismiss(animated: true, completion: nil)
         }
     }
@@ -75,8 +75,14 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         scrollView.addSubview(imageViewPicked)
         
         scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
         scrollView.delegate = self
+        
+        scrollView.minimumZoomScale = 0.1
+        scrollView.maximumZoomScale = 4.0
+        scrollView.zoomScale = 1.0
+
+        
+        
     }
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -89,11 +95,13 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         let minScale = min(widthScale, heightScale)
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
+        
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         updateMinZoomScaleForSize(view.bounds.size, contentView: imageViewPicked)
+        print(imageViewPicked.bounds)
     }
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
