@@ -26,6 +26,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         self.view.addSubview(yellowView)
 
         imageViewPicked.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - yellowView.frame.height)
+        imageViewPicked.image = UIImage(named: "placeholder")
+        imageViewPicked.contentMode = .scaleAspectFit
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,9 +35,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     }
     
     func setButton() {
-        
         let pickButton = UIButton()
-        pickButton.frame = CGRect(x: 98, y: 17, width: 180, height: 44)
+        pickButton.frame = CGRect(x: self.view.frame.width / 2 - 90 , y: 17 , width: 180, height: 44)
         pickButton.backgroundColor = UIColor(red: 43/255.0, green: 43/255.0, blue: 43/255.0, alpha: 1)
         pickButton.setTitle("Pick an Image", for: .normal)
         pickButton.setTitleColor(.white, for: .normal)
@@ -58,10 +59,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
-    
-    
-    
-    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             imageViewPicked.image = pickedImage
             imageViewPicked.contentMode = .scaleAspectFit
