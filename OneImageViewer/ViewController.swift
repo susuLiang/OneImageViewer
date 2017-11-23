@@ -19,7 +19,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     override func viewDidLoad() {
         super.viewDidLoad()
         setButton()
-        setScrollView()
         
         yellowView.frame = CGRect(x: 0, y: self.view.frame.height - 77, width: self.view.frame.width, height: 77)
         yellowView.backgroundColor = UIColor(red: 249/255.0, green: 223/255.0, blue: 23/255.0, alpha: 1)
@@ -29,6 +28,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         imageViewPicked.image = UIImage(named: "placeholder")?.withRenderingMode(.alwaysTemplate)
         imageViewPicked.contentMode = .center
         imageViewPicked.tintColor = UIColor.white
+        
+        setScrollView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,6 +66,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             imageViewPicked.image = pickedImage
             imageViewPicked.contentMode = .scaleAspectFit
+
             dismiss(animated: true, completion: nil)
         }
     }
@@ -105,13 +107,15 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     }
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        let imageViewSize = imageViewPicked.bounds.size
-        let scrollViewSize = scrollView.bounds.size
+        let imageViewSize = imageViewPicked.frame.size
+        let scrollViewSize = scrollView.frame.size
 
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
         let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
 
         scrollView.contentInset = UIEdgeInsets(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
+        print("scrollView: \(scrollView.frame)")
+        print("verticalPadding: \(verticalPadding)")
     }
     
 }
