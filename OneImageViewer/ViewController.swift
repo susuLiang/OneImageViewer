@@ -13,20 +13,19 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     var scrollView: UIScrollView!
     @IBOutlet weak var pickButton: UIButton!
     @IBOutlet weak var yellowView: UIView!
-    @IBOutlet weak var imageViewPicked: UIImageView!
     var imagePicker: UIImagePickerController!
+    var imageViewPicked = UIImageView()
    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setButtonView()
         setScrollView()
-
+        imageViewPicked.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - 77)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func setButtonView() {
@@ -44,9 +43,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         pickButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         yellowView.addSubview(pickButton)
         pickButton.addTarget(self, action: #selector(self.loadImage(_:)), for: .touchUpInside)
-        
-        
     }
+    
     
     @objc func loadImage(_ sender: UIButton) {
         imagePicker = UIImagePickerController()
@@ -60,60 +58,46 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            let imageViewPicked = UIImageView()
-            imageViewPicked.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - 77)
-            
             imageViewPicked.contentMode = .scaleAspectFit
             imageViewPicked.image = pickedImage
-            
-            scrollView.contentSize = imageViewPicked.bounds.size
-            
-            scrollView.addSubview(imageViewPicked)
-            
             dismiss(animated: true, completion: nil)
         }
-        
     }
     
     func setScrollView() {
 
         scrollView = UIScrollView()
         scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - 77)
-//        scrollView.contentSize = imageViewPicked.bounds.size
         scrollView.backgroundColor = UIColor.black
+        scrollView.contentSize = imageViewPicked.bounds.size
 
         self.view.addSubview(scrollView)
-//        scrollView.addSubview(imageViewPicked)
-
+        scrollView.addSubview(imageViewPicked)
+        
         scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         scrollView.delegate = self
-        scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 4.0
-        scrollView.zoomScale = 1.0
     }
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageViewPicked
     }
 
-//    fileprivate func updateMinZoomScaleForSize(_ size: CGSize) {
-//        let widthScale = size.width / imageViewPicked.bounds.width
-//        let heightScale = size.height / imageViewPicked.bounds.height
-//
-//        let minScale = min(widthScale, heightScale)
-//        scrollView.minimumZoomScale = minScale
-//        scrollView.zoomScale = minScale
-//
-//    }
+    fileprivate func updateMinZoomScaleForSize(_ size: CGSize, contentView: UIImageView) {
+        let widthScale = size.width / contentView.bounds.width
+        let heightScale = size.height / contentView.bounds.height
+        let minScale = min(widthScale, heightScale)
+        scrollView.minimumZoomScale = minScale
+        scrollView.zoomScale = minScale
+    }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-//        updateMinZoomScaleForSize(view.bounds.size)
+        updateMinZoomScaleForSize(view.bounds.size, contentView: imageViewPicked)
     }
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        let imageViewSize = imageViewPicked.frame.size
+        let imageViewSize = imageViewPicked.bounds.size
         let scrollViewSize = scrollView.bounds.size
 
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
@@ -123,4 +107,5 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     }
     
 }
+
 
