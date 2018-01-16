@@ -1,7 +1,6 @@
 # OneImageViewer
 
 User can choose their photo to the center place. The photo can zoom in. <br>
-Practice UIImagePickerController and UIScrollView.
 
 ## Screenshot
  
